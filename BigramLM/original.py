@@ -1,20 +1,21 @@
 import re
 import string
 
-
 with open("corpus.txt", "r", encoding="utf-8") as file:
     corpus = file.read()
 
 
 # Step 1: Split the corpus into sentences using punctuation (., !, ?)
-sentences = re.split(r'(?<=[.!?])\s+', corpus)
+sentences = re.split(r"(?<=[.!?])\s+", corpus)
 
 # Step 2: Build the bigram model using plain dictionaries
 bigram_model = {}
 
 for sentence in sentences:
     # Preprocess the sentence: lowercase and remove punctuation
-    sentence_clean = sentence.lower().translate(str.maketrans("", "", string.punctuation))
+    sentence_clean = sentence.lower().translate(
+        str.maketrans("", "", string.punctuation)
+    )
     tokens = sentence_clean.split()
     # Build bigram counts for the sentence
     for i in range(len(tokens) - 1):
@@ -29,7 +30,7 @@ for sentence in sentences:
 # Prediction loop: prompt the user for a word and predict the next word
 while True:
     user_input = input("Enter a word (or 'exit' to quit): ").lower().strip()
-    if user_input == 'exit':
+    if user_input == "exit":
         break
     if user_input in bigram_model:
         next_word_data = bigram_model[user_input]
@@ -42,7 +43,8 @@ while True:
                 max_count = count
                 predicted_word = word
         probability = (max_count / total_occurrences) * 100
-        print(f"Predicted next word: \"{predicted_word}\" with {probability:.2f}% probability.")
+        print(
+            f'Predicted next word: "{predicted_word}" with {probability:.2f}% probability.'
+        )
     else:
         print("None")
-
